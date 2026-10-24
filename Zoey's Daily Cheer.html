@@ -1,0 +1,599 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Zoey's Daily Cheer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Fredoka:wght@400;500;600;700&display=swap">
+<style>
+/* Layout concept: a loud pink-and-purple sticker sheet. Chunky outlined cards with hard offset shadows, a scrolling hype ticker, and game-style power-ups (level, streak, focus timer, open-when envelopes). */
+:root {
+  --bg: #FFE3F3;
+  --dots: #FFC4E3;
+  --surface: #FFFFFF;
+  --ink: #2A0B4D;
+  --muted: #6B4690;
+  --edge: #2A0B4D;
+  --shadow-c: #7A2CF5;
+  --pink: #F2399E;
+  --purple: #7A2CF5;
+  --lilac: #EBDDFF;
+  --yellow: #FFD84D;
+  --btn: #D4127E;
+  --on-btn: #FFFFFF;
+  --grad-a: #E0268F;
+  --grad-b: #7A2CF5;
+  --on-grad: #FFFFFF;
+  --font-display: "Bagel Fat One", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --font-body: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #17082B; --dots: #2A1048; --surface: #261045; --ink: #FBEFFF; --muted: #C9ADEC;
+    --edge: #FBEFFF; --shadow-c: #FF4DAA; --pink: #FF5BB0; --purple: #B58CFF; --lilac: #3A1B66;
+    --yellow: #FFD84D; --btn: #FF4DAA; --on-btn: #2A0B4D;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #17082B; --dots: #2A1048; --surface: #261045; --ink: #FBEFFF; --muted: #C9ADEC;
+  --edge: #FBEFFF; --shadow-c: #FF4DAA; --pink: #FF5BB0; --purple: #B58CFF; --lilac: #3A1B66;
+  --yellow: #FFD84D; --btn: #FF4DAA; --on-btn: #2A0B4D;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background-color: var(--bg);
+  background-image: radial-gradient(var(--dots) 2px, transparent 2.5px);
+  background-size: 26px 26px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.55;
+  padding-block: 28px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1040px; margin-inline: auto; display: flex; flex-direction: column; gap: 44px; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; margin: 0; text-wrap: balance; letter-spacing: .005em; }
+p { margin: 0; }
+
+/* Sticker cards */
+.sticker {
+  background: var(--surface); border: 3px solid var(--edge); border-radius: 26px;
+  box-shadow: 7px 7px 0 var(--shadow-c); min-width: 0;
+}
+.card { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+.card h2 { font-size: 30px; line-height: 1.1; }
+.card .sub { color: var(--muted); font-size: 17px; }
+.tag {
+  display: inline-block; align-self: flex-start; background: var(--yellow); color: #2A0B4D;
+  border: 2px solid var(--edge); border-radius: 999px; padding: 2px 14px; font-weight: 700; font-size: 13px;
+  letter-spacing: .1em; text-transform: uppercase;
+}
+
+/* Buttons */
+button {
+  font: inherit; font-weight: 700; font-size: 17px; cursor: pointer; color: var(--ink);
+  background: var(--surface); border: 3px solid var(--edge); border-radius: 999px; padding: 10px 22px;
+  box-shadow: 4px 4px 0 var(--edge); transition: transform .1s ease, box-shadow .1s ease;
+}
+button:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--edge); }
+button:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--edge); }
+button:focus-visible, input:focus-visible { outline: 4px solid var(--yellow); outline-offset: 3px; }
+button.hot { background: var(--btn); color: var(--on-btn); }
+button.hot[aria-pressed="true"] { background: var(--yellow); color: #2A0B4D; }
+button.big { font-size: 22px; padding: 14px 28px; }
+button.small { font-size: 15px; padding: 7px 16px; box-shadow: 3px 3px 0 var(--edge); }
+button[aria-pressed="true"].chip { background: var(--purple); color: #fff; }
+.row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+
+/* Hero */
+.hero { position: relative; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 36px; align-items: center; padding-top: 8px; }
+.hero-copy { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; min-width: 0; }
+.pill { background: var(--surface); border: 3px solid var(--edge); border-radius: 999px; padding: 4px 16px; font-weight: 700; font-size: 16px; box-shadow: 3px 3px 0 var(--shadow-c); }
+h1 { font-size: clamp(46px, 9vw, 92px); line-height: .98; }
+h1 .grad {
+  color: var(--pink);
+  background: linear-gradient(100deg, var(--pink), var(--purple));
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.lede { font-size: 20px; color: var(--muted); max-width: 40ch; }
+.hype-out {
+  min-height: 3.2em; font-size: 21px; font-weight: 600; background: var(--lilac); border: 3px dashed var(--edge);
+  border-radius: 20px; padding: 12px 18px; width: 100%;
+}
+.twinkle { position: absolute; color: var(--yellow); font-size: 34px; line-height: 1; pointer-events: none; text-shadow: 2px 2px 0 var(--edge); }
+.tw1 { top: -6px; left: 46%; } .tw2 { bottom: 4px; left: -6px; font-size: 26px; color: var(--pink); } .tw3 { top: 40%; right: -4px; font-size: 28px; color: var(--purple); }
+
+/* Daily leaf */
+.leaf {
+  background: linear-gradient(140deg, var(--grad-a), var(--grad-b)); color: var(--on-grad);
+  border: 3px solid var(--edge); border-radius: 30px; box-shadow: 9px 9px 0 var(--yellow);
+  padding: 24px 24px 22px; display: flex; flex-direction: column; gap: 14px; transform: rotate(1.6deg); min-width: 0;
+}
+.leaf-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: 13px; flex-wrap: wrap; }
+.leaf-date { display: flex; align-items: flex-end; gap: 14px; }
+.leaf-day { font-family: var(--font-display); font-size: 96px; line-height: .85; color: var(--yellow); text-shadow: 4px 4px 0 rgba(42,11,77,.55); }
+.leaf-weekday { font-size: 19px; font-weight: 600; padding-bottom: 4px; }
+.leaf-msg { font-size: 23px; line-height: 1.38; font-weight: 600; min-height: 6.2em; text-wrap: pretty; }
+.leaf-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; border-top: 2px dashed rgba(255,255,255,.55); padding-top: 14px; }
+.leaf .sig { font-family: var(--font-display); font-size: 19px; }
+.leaf button { background: #fff; color: #2A0B4D; border-color: #2A0B4D; box-shadow: 3px 3px 0 #2A0B4D; }
+
+/* Ticker */
+.ticker-wrap { overflow: hidden; padding-block: 16px; margin-inline: -4px; }
+.ticker {
+  display: flex; width: max-content; background: var(--yellow); color: #2A0B4D;
+  border-block: 3px solid var(--edge); transform: rotate(-1.4deg);
+  font-family: var(--font-display); font-size: 26px; white-space: nowrap; animation: scroll 38s linear infinite;
+}
+.ticker span { padding: 8px 20px; }
+@keyframes scroll { to { transform: rotate(-1.4deg) translateX(-50%); } }
+
+/* Power-ups */
+.powers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.level-name { font-family: var(--font-display); font-size: 30px; line-height: 1.05; color: var(--purple); }
+.lvl-num { font-size: 15px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.meter { height: 24px; background: var(--lilac); border: 3px solid var(--edge); border-radius: 999px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--pink), var(--purple)); border-right: 3px solid var(--edge); transition: width .6s cubic-bezier(.2,.9,.3,1.2); }
+.meter-note { font-size: 15px; color: var(--muted); font-weight: 500; }
+.week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.day { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 13px; font-weight: 700; color: var(--muted); }
+.dot { width: 100%; max-width: 38px; aspect-ratio: 1; border-radius: 50%; border: 3px solid var(--edge); background: var(--lilac); display: grid; place-items: center; font-size: 16px; color: #2A0B4D; }
+.dot.done { background: var(--yellow); }
+.dot.today { box-shadow: 0 0 0 3px var(--pink); }
+.streak-line { font-weight: 700; }
+.big-days { font-family: var(--font-display); font-size: 64px; line-height: 1; color: var(--pink); }
+.big-days small { font-family: var(--font-body); font-size: 17px; font-weight: 600; color: var(--muted); margin-left: 8px; }
+label { font-weight: 700; font-size: 15px; }
+input[type="date"] { font: inherit; color: var(--ink); background: var(--lilac); border: 3px solid var(--edge); border-radius: 14px; padding: 8px 12px; max-width: 100%; }
+
+/* Focus + mood */
+.duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+.timer { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.ring { position: relative; width: 168px; height: 168px; flex: none; }
+.ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring .track { stroke: var(--lilac); }
+.ring .prog { stroke: var(--btn); transition: stroke-dashoffset .3s linear; }
+.ring-time { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-display); font-size: 40px; font-variant-numeric: tabular-nums; }
+.timer-side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.modes { display: flex; gap: 8px; flex-wrap: wrap; }
+.timer-note { font-size: 16px; font-weight: 600; color: var(--muted); }
+.moods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.moods button { padding: 10px 12px; font-size: 16px; }
+.mood-out { background: var(--lilac); border: 3px dashed var(--edge); border-radius: 20px; padding: 14px 16px; font-size: 18px; font-weight: 500; min-height: 5.6em; }
+
+/* Envelopes */
+.section-title { display: flex; flex-direction: column; gap: 6px; }
+.section-title h2 { font-size: clamp(32px, 5vw, 46px); line-height: 1.05; }
+.section-title p { color: var(--muted); }
+.envs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; align-items: start; }
+.env { display: flex; flex-direction: column; gap: 0; min-width: 0; }
+.env > button {
+  text-align: left; border-radius: 22px; width: 100%; padding: 18px 16px; line-height: 1.2;
+  background: var(--lilac); box-shadow: 5px 5px 0 var(--shadow-c); display: flex; flex-direction: column; gap: 4px;
+}
+.env > button small { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.env > button span { font-family: var(--font-display); font-size: 23px; font-weight: 400; }
+.env > button[aria-expanded="true"] { background: var(--yellow); color: #2A0B4D; }
+.env > button[aria-expanded="true"] small { color: #2A0B4D; }
+.env .note { margin-top: 14px; padding: 16px; background: var(--surface); border: 3px solid var(--edge); border-radius: 20px; font-size: 17px; font-weight: 500; }
+
+/* Letter */
+.letter { padding: 34px; background: linear-gradient(140deg, var(--grad-a), var(--grad-b)); color: var(--on-grad); border: 3px solid var(--edge); border-radius: 32px; box-shadow: 9px 9px 0 var(--yellow); display: grid; grid-template-columns: minmax(0, 240px) minmax(0, 1fr); gap: 32px; }
+.letter h2 { font-size: clamp(34px, 5vw, 48px); line-height: 1.02; }
+.letter .eyebrow { font-weight: 700; letter-spacing: .14em; text-transform: uppercase; font-size: 13px; margin-bottom: 10px; }
+.letter-body { display: flex; flex-direction: column; gap: 16px; font-size: 20px; max-width: 58ch; font-weight: 500; }
+.letter-sign { font-family: var(--font-display); font-size: 40px; color: var(--yellow); text-shadow: 3px 3px 0 rgba(42,11,77,.5); }
+
+.foot { text-align: center; font-family: var(--font-display); font-size: 24px; color: var(--purple); }
+
+canvas#fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; }
+
+@media (max-width: 860px) {
+  body { font-size: 17px; }
+  .hero, .duo, .letter { grid-template-columns: minmax(0, 1fr); }
+  .powers { grid-template-columns: minmax(0, 1fr); }
+  .envs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .leaf { transform: rotate(1deg); }
+  .leaf-msg { min-height: 0; font-size: 21px; }
+  .letter { padding: 24px; gap: 18px; }
+}
+@media (max-width: 480px) {
+  .envs { grid-template-columns: minmax(0, 1fr); }
+  .ring { width: 150px; height: 150px; }
+  .card { padding: 20px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .twinkle { animation: tw 2.4s ease-in-out infinite; }
+  .tw2 { animation-delay: .8s; } .tw3 { animation-delay: 1.6s; }
+  @keyframes tw { 0%, 100% { transform: scale(1) rotate(0); } 50% { transform: scale(1.35) rotate(18deg); } }
+  .pop { animation: pop .4s cubic-bezier(.2,1.4,.4,1); }
+  @keyframes pop { from { transform: scale(.92); opacity: .3; } to { transform: none; opacity: 1; } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker { animation: none; transform: rotate(-1.4deg); width: auto; flex-wrap: wrap; white-space: normal; }
+  .ticker .dup { display: none; }
+  button, .meter i { transition: none; }
+}
+</style>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="twinkle tw1" aria-hidden="true">&#10022;</span>
+    <span class="twinkle tw2" aria-hidden="true">&#10022;</span>
+    <span class="twinkle tw3" aria-hidden="true">&#10022;</span>
+    <div class="hero-copy">
+      <span class="pill" id="greeting">Hi Zoey</span>
+      <h1>You're doing <span class="grad">amazing,</span> Zoey!</h1>
+      <p class="lede">Finals are tough, but so are you. Come back every day for a boost, because I'm cheering for you the whole way.</p>
+      <button type="button" class="hot big" id="hype">Hype me up!</button>
+      <p class="hype-out" id="hype-out" aria-live="polite">Tap the button whenever you need a boost.</p>
+    </div>
+
+    <section class="leaf" aria-labelledby="leaf-label">
+      <div class="leaf-head"><span id="leaf-label">Today's message</span><span id="leaf-month">October</span></div>
+      <div class="leaf-date">
+        <span class="leaf-day" id="leaf-day">24</span>
+        <span class="leaf-weekday" id="leaf-weekday">Saturday</span>
+      </div>
+      <p class="leaf-msg" id="leaf-msg" aria-live="polite"></p>
+      <div class="leaf-foot">
+        <span class="sig">Cheering for you, CJ</span>
+        <button type="button" class="small" id="another">Another one</button>
+      </div>
+    </section>
+  </header>
+
+  <div class="ticker-wrap" aria-hidden="true">
+    <div class="ticker" id="ticker"></div>
+  </div>
+
+  <section class="powers" aria-label="Your power-ups">
+    <div class="sticker card">
+      <span class="tag">Your level</span>
+      <div class="lvl-num" id="lvl-num">Level 1</div>
+      <h2 class="level-name" id="lvl-name">Just getting started</h2>
+      <div class="meter" role="progressbar" aria-label="Progress to next level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="meter"><i id="meter-fill"></i></div>
+      <p class="meter-note" id="meter-note"></p>
+      <p class="sub">Showing up earns 20 XP. A finished focus session earns 5.</p>
+    </div>
+
+    <div class="sticker card">
+      <span class="tag">Streak</span>
+      <h2>Did you show up today?</h2>
+      <div class="week" id="week" aria-label="Last seven days"></div>
+      <p class="streak-line" id="count-line"></p>
+      <div class="row"><button type="button" class="hot" id="checkin" aria-pressed="false">I showed up today</button></div>
+    </div>
+
+    <div class="sticker card">
+      <span class="tag">Countdown</span>
+      <div class="big-days" id="big-days" aria-live="polite">Set the date</div>
+      <p class="sub" id="countdown-note">Pick your first exam date and this counts down by itself.</p>
+      <div class="row">
+        <label for="exam-date">First exam</label>
+        <input type="date" id="exam-date">
+        <button type="button" class="small" id="clear-date">Clear</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="duo">
+    <div class="sticker card" aria-labelledby="focus-title">
+      <span class="tag">Focus time</span>
+      <h2 id="focus-title">Study sprint</h2>
+      <div class="timer">
+        <div class="ring">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="track" cx="60" cy="60" r="52" fill="none" stroke-width="12"></circle>
+            <circle class="prog" id="prog" cx="60" cy="60" r="52" fill="none" stroke-width="12" stroke-linecap="round" stroke-dasharray="326.73" stroke-dashoffset="0"></circle>
+          </svg>
+          <div class="ring-time" id="ring-time" role="timer" aria-live="off">25:00</div>
+        </div>
+        <div class="timer-side">
+          <div class="modes" role="group" aria-label="Sprint length">
+            <button type="button" class="small chip" data-min="25" aria-pressed="true">25 min</button>
+            <button type="button" class="small chip" data-min="15" aria-pressed="false">15 min</button>
+            <button type="button" class="small chip" data-min="5" aria-pressed="false">5 min</button>
+          </div>
+          <div class="row">
+            <button type="button" class="hot" id="timer-go">Start</button>
+            <button type="button" class="small" id="timer-reset">Reset</button>
+          </div>
+          <p class="timer-note" id="timer-note">No phone, one topic. Then you earn a break.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sticker card" aria-labelledby="mood-title">
+      <span class="tag">Check in</span>
+      <h2 id="mood-title">How are you feeling?</h2>
+      <div class="moods" id="moods">
+        <button type="button" data-m="stressed">Stressed</button>
+        <button type="button" data-m="tired">Tired</button>
+        <button type="button" data-m="doubt">Doubting myself</button>
+        <button type="button" data-m="okay">Okay</button>
+        <button type="button" data-m="fire">Fired up</button>
+      </div>
+      <p class="mood-out" id="mood-out" aria-live="polite">Pick one and I'll tell you what I'd say if I was sitting next to you.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="open-title" style="display:flex;flex-direction:column;gap:22px">
+    <div class="section-title">
+      <h2 id="open-title">Open when...</h2>
+      <p>Little notes from me, saved for the moments you need them.</p>
+    </div>
+    <div class="envs" id="envs"></div>
+  </section>
+
+  <section class="letter" aria-labelledby="letter-title">
+    <div>
+      <p class="eyebrow">A note from CJ</p>
+      <h2 id="letter-title">I'm in your corner.</h2>
+    </div>
+    <div class="letter-body">
+      <p>Zoey, I know how much you've put into this year. The late nights, the notes, the days you didn't feel like opening the book and did it anyway.</p>
+      <p>Even when it's hard, you are doing amazing. Hard doesn't mean you're behind or not good enough. It means you're stretching and growing, and that's exactly what you're doing.</p>
+      <p>Whatever the results say, I'm proud of you for how you're showing up. I'm cheering for you every single day.</p>
+      <p class="letter-sign">CJ</p>
+    </div>
+  </section>
+
+  <p class="foot">You've got this, Zoey.</p>
+</div>
+
+<script>
+(function () {
+  var MESSAGES = [
+    "Today you only have to do today. Open the book, start the first page, and let the rest follow.",
+    "Hard days don't mean you're failing. They mean you're working on something that matters.",
+    "I've watched you push through before. This is one more thing you'll handle.",
+    "Rest is part of studying. Take your break and come back without guilt.",
+    "You don't need to feel ready to be ready. Showing up counts.",
+    "Whatever you learned yesterday is already yours. Today adds to it.",
+    "Progress is allowed to be slow. Slow still moves you forward.",
+    "Drink some water, stretch, then take on the next topic. You've got this.",
+    "A bad practice paper is just information. It shows you where to aim today.",
+    "I'm proud of how much you're carrying right now, and how well you're carrying it.",
+    "One topic at a time. You don't have to hold the whole syllabus in your head at once.",
+    "If your brain feels full, step outside for five minutes. The answers will still be there.",
+    "You're allowed to be tired and still be capable. Both are true.",
+    "Think of how far you've come since the first day of the year.",
+    "Your effort is already showing, even on the days it doesn't feel like it.",
+    "Eat something good today. Your brain is working hard and needs fuel.",
+    "Nobody studies perfectly. You're doing it your way and it's working.",
+    "Whatever the exam asks, you can bring your best. That's all anyone can do.",
+    "Be as kind to yourself as you would be to a friend in your position.",
+    "Today's goal is to be a little better than yesterday. That's more than enough.",
+    "Don't compare your pace to anyone else's. You're running your own race.",
+    "I believe in you, and I'm saying it again today in case you forgot.",
+    "Sleep matters more than one extra hour of cramming. Look after yourself tonight.",
+    "You've handled hard things before. This is another one on the list.",
+    "Stuck on something? Write down what you do know first. It's usually more than you think.",
+    "Every page you finish is a page you don't have to do later. Future you says thanks.",
+    "You are smart, you are prepared enough, and you are not alone in this.",
+    "The finish line is closer than it feels. Keep going.",
+    "Even a short study session today beats waiting for the perfect one.",
+    "However today goes, I'm cheering for you. Loudly."
+  ];
+  var HYPE = [
+    "You are way smarter than your stress makes you feel.",
+    "Look at you, still going. That takes real strength.",
+    "Main character energy only. Go get it, Zoey!",
+    "Your future self is already proud of what you're doing right now.",
+    "You've survived every hard day so far. That's a 100% record.",
+    "Brain on. Confidence on. Zoey unstoppable.",
+    "Nobody works as hard as you do and gets nothing from it.",
+    "You were made for big things, and this exam is a small one.",
+    "I'm cheering so loud right now. Can you hear me?",
+    "Deep breath. Shoulders down. You know more than you think.",
+    "You're not just getting through this, you're glowing through it.",
+    "Every minute you study is a gift to the Zoey who writes that paper.",
+    "Tired is temporary. Proud is forever.",
+    "You, a pen and a plan. Nothing can stop that."
+  ];
+  var TICKS = ["YOU'VE GOT THIS", "PROUD OF YOU", "ZOEY IS A STAR", "ONE STEP AT A TIME", "BELIEVE IT", "YOU'RE DOING AMAZING", "KEEP GOING", "CJ IS CHEERING"];
+  var LEVELS = [
+    { xp: 0, name: "Just getting started" }, { xp: 20, name: "Warming up" }, { xp: 60, name: "On a roll" },
+    { xp: 120, name: "Unstoppable" }, { xp: 200, name: "Main character" }, { xp: 320, name: "Exam queen" }, { xp: 480, name: "Absolute legend" }
+  ];
+  var MOODS = {
+    stressed: "Breathe in for four, out for six, three times. Then pick the smallest task on your list and start there. You've handled stress before and you'll handle this.",
+    tired: "Then rest is part of today's job. Water, a snack, a proper break. Rested Zoey learns faster than exhausted Zoey, I promise.",
+    doubt: "I've seen how hard you work, and doubt doesn't change that. Write down three things you know really well, then read them back out loud.",
+    okay: "Okay is a good place to start. Steady beats perfect. Do one small thing now and let it snowball.",
+    fire: "YES! Ride that wave. Do your hardest topic right now while the energy is high. I'm so hyped for you!"
+  };
+  var ENVELOPES = [
+    { k: "Open when", t: "You feel overwhelmed", m: "Stop. Breathe. You don't have to do everything today, only the next thing. Write that one thing down and start. I'm proud of you." },
+    { k: "Open when", t: "You finish a paper", m: "You did it! Whatever happened in there, it's done and you showed up. Go rest, celebrate, and don't replay it. On to the next one." },
+    { k: "Open when", t: "You doubt yourself", m: "You're good enough, smart enough and brave enough. You got this far because of who you are. One tough day doesn't change that." },
+    { k: "Open when", t: "You can't sleep", m: "Your brain has done enough for today. Nothing you read tonight will beat the sleep you're missing. Put it down. Tomorrow's Zoey will handle it." }
+  ];
+  var MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  var WEEKDAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  var LETTERS = ["S","M","T","W","T","F","S"];
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function $(id) { return document.getElementById(id); }
+  function store(key, val) { try { if (val === undefined) return localStorage.getItem(key); if (val === null) localStorage.removeItem(key); else localStorage.setItem(key, val); } catch (e) {} return null; }
+  function iso(d) { var m = d.getMonth() + 1, day = d.getDate(); return d.getFullYear() + "-" + (m < 10 ? "0" : "") + m + "-" + (day < 10 ? "0" : "") + day; }
+  function midnight(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function pop(el) { el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop"); }
+
+  /* ---------- Confetti ---------- */
+  var cv = $("fx"), cx = cv.getContext ? cv.getContext("2d") : null, parts = [], running = false;
+  function sizeCanvas() { cv.width = window.innerWidth; cv.height = window.innerHeight; }
+  sizeCanvas(); window.addEventListener("resize", sizeCanvas);
+  var COLORS = ["#FF3E9C", "#7A2CF5", "#FFD84D", "#FF8CCB", "#B58CFF", "#FFFFFF"];
+  function burst(x, y, n) {
+    if (reduce || !cx) return;
+    for (var i = 0; i < n; i++) {
+      var a = Math.random() * Math.PI * 2, s = 5 + Math.random() * 9;
+      parts.push({ x: x, y: y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 6, w: 6 + Math.random() * 7, h: 4 + Math.random() * 6, r: Math.random() * 6, vr: (Math.random() - .5) * .4, c: COLORS[(Math.random() * COLORS.length) | 0], life: 90 + Math.random() * 50 });
+    }
+    if (!running) { running = true; requestAnimationFrame(tick); }
+  }
+  function tick() {
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var i = parts.length - 1; i >= 0; i--) {
+      var p = parts[i];
+      p.vy += .28; p.vx *= .985; p.x += p.vx; p.y += p.vy; p.r += p.vr; p.life--;
+      if (p.life <= 0 || p.y > cv.height + 20) { parts.splice(i, 1); continue; }
+      cx.save(); cx.translate(p.x, p.y); cx.rotate(p.r); cx.globalAlpha = Math.min(1, p.life / 30);
+      cx.fillStyle = p.c; cx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); cx.restore();
+    }
+    if (parts.length) requestAnimationFrame(tick); else { running = false; cx.clearRect(0, 0, cv.width, cv.height); }
+  }
+  function burstFrom(el, n) { var r = el.getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2, n || 90); }
+
+  /* ---------- Date + greeting ---------- */
+  var now = new Date(), today = midnight(now), h = now.getHours();
+  $("greeting").textContent = h < 5 ? "Still up, Zoey?" : h < 12 ? "Good morning, Zoey" : h < 18 ? "Good afternoon, Zoey" : "Good evening, Zoey";
+  $("leaf-day").textContent = today.getDate();
+  $("leaf-month").textContent = MONTHS[today.getMonth()] + " " + today.getFullYear();
+  $("leaf-weekday").textContent = WEEKDAYS[today.getDay()];
+
+  /* Ticker */
+  var tk = "";
+  for (var t = 0; t < 2; t++) for (var j = 0; j < TICKS.length; j++) tk += '<span' + (t ? ' class="dup"' : '') + '>' + TICKS[j] + ' &#10022;</span>';
+  $("ticker").innerHTML = tk;
+
+  /* Daily message */
+  var dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000), offset = 0;
+  function showMessage(anim) { var el = $("leaf-msg"); el.textContent = MESSAGES[(dayOfYear + offset) % MESSAGES.length]; if (anim) pop(el); }
+  showMessage(false);
+  $("another").addEventListener("click", function () { offset++; showMessage(true); });
+
+  /* Hype */
+  var hypeI = Math.floor(Math.random() * HYPE.length);
+  $("hype").addEventListener("click", function () {
+    hypeI = (hypeI + 1) % HYPE.length;
+    var out = $("hype-out"); out.textContent = HYPE[hypeI]; pop(out);
+    burstFrom(this, 110);
+  });
+
+  /* ---------- Progress ---------- */
+  var days = [], sessions = {};
+  try { days = JSON.parse(store("zoey-days") || "[]"); if (!Array.isArray(days)) days = []; } catch (e) { days = []; }
+  try { sessions = JSON.parse(store("zoey-sessions") || "{}"); if (!sessions || typeof sessions !== "object") sessions = {}; } catch (e) { sessions = {}; }
+  function save() { store("zoey-days", JSON.stringify(days.slice(-400))); store("zoey-sessions", JSON.stringify(sessions)); }
+  function totalSessions() { var n = 0; for (var k in sessions) n += +sessions[k] || 0; return n; }
+
+  function renderLevel() {
+    var xp = days.length * 20 + totalSessions() * 5, li = 0;
+    for (var i = 0; i < LEVELS.length; i++) if (xp >= LEVELS[i].xp) li = i;
+    $("lvl-num").textContent = "Level " + (li + 1) + " · " + xp + " XP";
+    $("lvl-name").textContent = LEVELS[li].name;
+    var next = LEVELS[li + 1], pct = 100;
+    if (next) { pct = Math.round((xp - LEVELS[li].xp) / (next.xp - LEVELS[li].xp) * 100); $("meter-note").textContent = (next.xp - xp) + " XP to " + next.name; }
+    else $("meter-note").textContent = "Top level reached. You're a legend.";
+    $("meter-fill").style.width = Math.max(pct, 6) + "%";
+    $("meter").setAttribute("aria-valuenow", pct);
+  }
+  function renderWeek() {
+    var wrap = $("week"), count = 0; wrap.innerHTML = "";
+    for (var i = 6; i >= 0; i--) {
+      var d = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i), done = days.indexOf(iso(d)) !== -1;
+      if (done) count++;
+      var cell = document.createElement("div"); cell.className = "day";
+      var dot = document.createElement("div"); dot.className = "dot" + (done ? " done" : "") + (i === 0 ? " today" : "");
+      dot.textContent = done ? "★" : ""; dot.setAttribute("role", "img"); dot.setAttribute("aria-label", WEEKDAYS[d.getDay()] + (done ? ": done" : ": not yet"));
+      var lab = document.createElement("span"); lab.textContent = LETTERS[d.getDay()];
+      cell.appendChild(dot); cell.appendChild(lab); wrap.appendChild(cell);
+    }
+    var td = days.indexOf(iso(today)) !== -1, b = $("checkin");
+    b.setAttribute("aria-pressed", td ? "true" : "false");
+    b.textContent = td ? "You showed up today!" : "I showed up today";
+    $("count-line").textContent = count === 0 ? "A fresh week. Let's get that first star." : count + " of the last 7 days. Look at you go!";
+  }
+  function renderAll() { renderWeek(); renderLevel(); }
+  $("checkin").addEventListener("click", function () {
+    var key = iso(today), i = days.indexOf(key);
+    if (i === -1) { days.push(key); burstFrom(this, 120); } else days.splice(i, 1);
+    save(); renderAll();
+  });
+  renderAll();
+
+  /* Countdown */
+  function renderCountdown() {
+    var val = store("zoey-exam"), big = $("big-days"), note = $("countdown-note");
+    if (!val) { big.textContent = "Set the date"; note.textContent = "Pick your first exam date and this counts down by itself."; return; }
+    var p = val.split("-"), diff = Math.round((new Date(+p[0], +p[1] - 1, +p[2]) - today) / 86400000);
+    if (diff > 1) { big.innerHTML = diff + "<small>days to go</small>"; note.textContent = "Plenty of time to take it one topic at a time."; }
+    else if (diff === 1) { big.innerHTML = "1<small>day to go</small>"; note.textContent = "Tomorrow! Eat well, sleep well, and trust everything you've done."; }
+    else if (diff === 0) { big.textContent = "Today!"; note.textContent = "It's exam day. Breathe, read each question slowly, and show them what you know."; }
+    else { big.textContent = "You're in it"; note.textContent = "Exams are underway. One paper at a time, and I'm cheering for every one."; }
+  }
+  var inp = $("exam-date"), saved = store("zoey-exam"); if (saved) inp.value = saved;
+  inp.addEventListener("change", function () { store("zoey-exam", inp.value || null); renderCountdown(); });
+  $("clear-date").addEventListener("click", function () { inp.value = ""; store("zoey-exam", null); renderCountdown(); });
+  renderCountdown();
+
+  /* ---------- Focus timer ---------- */
+  var C = 326.73, mins = 25, total = 25 * 60, left = total, endAt = 0, iv = null;
+  function fmt(s) { var m = Math.floor(s / 60), r = s % 60; return (m < 10 ? "0" : "") + m + ":" + (r < 10 ? "0" : "") + r; }
+  function drawTimer() {
+    $("ring-time").textContent = fmt(left);
+    $("prog").style.strokeDashoffset = String(C * (1 - left / total));
+  }
+  function stopTimer() { if (iv) { clearInterval(iv); iv = null; } $("timer-go").textContent = left === total ? "Start" : "Resume"; $("timer-go").setAttribute("aria-pressed", "false"); }
+  function finish() {
+    clearInterval(iv); iv = null; left = 0; drawTimer();
+    var k = iso(today); sessions[k] = (+sessions[k] || 0) + 1; save(); renderLevel();
+    $("timer-note").textContent = "Sprint done! +5 XP. Stretch, sip some water, then go again when you're ready.";
+    $("timer-go").textContent = "Start"; left = total; setTimeout(drawTimer, 1800);
+    burstFrom($("ring-time"), 160);
+  }
+  function startTimer() {
+    endAt = Date.now() + left * 1000;
+    $("timer-go").textContent = "Pause"; $("timer-note").textContent = "You're in the zone. Stay on one topic.";
+    iv = setInterval(function () {
+      left = Math.max(0, Math.round((endAt - Date.now()) / 1000)); drawTimer();
+      if (left <= 0) finish();
+    }, 250);
+  }
+  $("timer-go").addEventListener("click", function () { if (iv) { stopTimer(); } else { startTimer(); } });
+  $("timer-reset").addEventListener("click", function () { stopTimer(); left = total; drawTimer(); $("timer-go").textContent = "Start"; $("timer-note").textContent = "No phone, one topic. Then you earn a break."; });
+  var chips = document.querySelectorAll(".chip");
+  Array.prototype.forEach.call(chips, function (c) {
+    c.addEventListener("click", function () {
+      if (iv) stopTimer();
+      Array.prototype.forEach.call(chips, function (o) { o.setAttribute("aria-pressed", o === c ? "true" : "false"); });
+      mins = +c.getAttribute("data-min"); total = mins * 60; left = total; drawTimer(); $("timer-go").textContent = "Start";
+    });
+  });
+  drawTimer();
+
+  /* ---------- Mood ---------- */
+  var moodBtns = document.querySelectorAll("#moods button");
+  Array.prototype.forEach.call(moodBtns, function (b) {
+    b.addEventListener("click", function () {
+      var out = $("mood-out"); out.textContent = MOODS[b.getAttribute("data-m")]; pop(out);
+      if (b.getAttribute("data-m") === "fire") burstFrom(b, 120);
+    });
+  });
+
+  /* ---------- Open when envelopes ---------- */
+  var envs = $("envs");
+  ENVELOPES.forEach(function (e, i) {
+    var box = document.createElement("div"); box.className = "env";
+    var btn = document.createElement("button"); btn.type = "button"; btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-controls", "env-" + i);
+    btn.innerHTML = "<small>" + e.k + "</small><span>" + e.t + "</span>";
+    var note = document.createElement("p"); note.className = "note"; note.id = "env-" + i; note.hidden = true; note.textContent = e.m;
+    btn.addEventListener("click", function () {
+      var open = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", open ? "false" : "true"); note.hidden = open;
+      if (!open) { pop(note); burstFrom(btn, 45); }
+    });
+    box.appendChild(btn); box.appendChild(note); envs.appendChild(box);
+  });
+})();
+</script>
+
+</body></html>
